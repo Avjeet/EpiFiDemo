@@ -1,0 +1,89 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.express.epifidemo"
+        minSdk 24
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner testing.junitRunner
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures{
+        dataBinding = true
+    }
+}
+
+dependencies {
+
+    implementation kotlinDep.core
+
+    //Android
+    implementation androidDependencies.appCompat
+    implementation androidDependencies.androidXCore
+    implementation androidDependencies.activityKtx
+    implementation androidDependencies.fragmentKtx
+    implementation androidDependencies.legacySupport
+
+    //hilt
+    implementation hiltDep.core
+    implementation hiltJetpackDep.viewModel
+    kapt hiltDep.compiler
+    kapt hiltJetpackDep.compilerX
+
+    //Arch components
+    implementation archComponents.components
+    implementation archComponents.viewModel
+    kapt archComponents.componentsCompiler
+    implementation archComponents.viewModelKtx
+    implementation archComponents.lifecycle
+
+    //Networking
+    implementation networking.okhttp
+    implementation networking.okhttpLog
+    implementation networking.gson
+    implementation networking.retrofit
+    implementation networking.retrofitGson
+
+    //UI
+    implementation ui.constraintLayout
+    implementation ui.recyclerview
+    implementation ui.material
+    implementation ui.glide
+    implementation ui.shimmer
+    implementation ui.glideWebpDecoder
+    kapt ui.glideCompiler
+
+    //testing
+    testImplementation testing.junit
+    testImplementation testing.mockk
+    testImplementation testing.archCoreTesting
+    testImplementation testing.coroutineTesting
+    debugImplementation testing.fragmentTesting
+    androidTestImplementation testing.mockk
+    androidTestImplementation testing.ext
+    androidTestImplementation testing.espresso
+    androidTestImplementation testing.espressocontrib
+}
