@@ -17,7 +17,44 @@ data class Movie(
     val type: String,
     @SerializedName("Year")
     val year: String
-)
+){
+    companion object{
+        fun getTestData(): List<Movie>{
+            return mutableListOf(
+                Movie("edcsec",
+                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
+                    "The Avengers",
+                    "movie",
+                    "2012"
+                ),
+                Movie("edcsec",
+                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
+                    "The Avengers",
+                    "movie",
+                    "2012"
+                ),
+                Movie("edcsec",
+                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
+                    "The Avengers",
+                    "movie",
+                    "2012"
+                ),
+                Movie("edcsec",
+                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
+                    "The Avengers",
+                    "movie",
+                    "2012"
+                ),
+                Movie("edcsec",
+                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
+                    "The Avengers",
+                    "movie",
+                    "2012"
+                )
+            )
+        }
+    }
+}
 
 data class MovieDetail(
     @SerializedName("Actors")

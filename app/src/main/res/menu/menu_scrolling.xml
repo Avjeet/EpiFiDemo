@@ -1,10 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.express.epifidemo.HomeActivity">
+    tools:context="com.express.epifidemo.ui.home.HomeActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_bookmark"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="Bookmark"
+        android:icon="@drawable/ic_baseline_bookmark_border_24"
+        app:showAsAction="always" />
 </menu>
