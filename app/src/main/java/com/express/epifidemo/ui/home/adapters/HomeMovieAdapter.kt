@@ -3,15 +3,15 @@ package com.express.epifidemo.ui.home.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.express.epifidemo.data.Movie
 import com.express.epifidemo.databinding.ItemMovieBinding
 
 class HomeMovieAdapter(context: Context, private val itemClickListener: OnItemClickListener) :
-    ListAdapter<Movie, HomeMovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<Movie, HomeMovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -38,9 +38,11 @@ class HomeMovieAdapter(context: Context, private val itemClickListener: OnItemCl
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(getItem(position))
-        holder.itemView.setOnClickListener {
-            itemClickListener.onItemClick(holder.adapterPosition, getItem(holder.adapterPosition))
+        getItem(position)?.let { movie ->
+            holder.bind(movie)
+            holder.itemView.setOnClickListener {
+                itemClickListener.onItemClick(holder.absoluteAdapterPosition, movie)
+            }
         }
     }
 

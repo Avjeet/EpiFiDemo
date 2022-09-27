@@ -63,6 +63,12 @@ buildscript {
                 glideWebpDecoder: "com.github.zjupure:webpdecoder:2.0.4.12.0"
         ]
 
+        paging_version = "3.1.1"
+        paging = [
+                //Paging
+                pagingRuntime:  "androidx.paging:paging-runtime:$paging_version"
+        ]
+
         /*https://developer.android.com/training/dependency-injection/hilt-android*/
         hiltVersion = '2.39.1'
         hiltDep = [

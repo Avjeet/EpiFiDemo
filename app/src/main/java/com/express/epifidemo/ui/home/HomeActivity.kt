@@ -3,31 +3,39 @@ package com.express.epifidemo.ui.home
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.express.epifidemo.R
+import com.express.epifidemo.constants.MovieType
 import com.express.epifidemo.data.Movie
 import com.express.epifidemo.databinding.ActivityHomeBinding
 import com.express.epifidemo.helpers.SpacingItemDecoration
 import com.express.epifidemo.ui.home.adapters.HomeMovieAdapter
+import com.express.epifidemo.viewmodel.HomeMovieViewModel
+import com.google.android.material.tabs.TabLayout
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
-class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener {
+@AndroidEntryPoint
+class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
+    TabLayout.OnTabSelectedListener {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var adapterMovies: HomeMovieAdapter
+    val viewModel: HomeMovieViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+        //AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
         setSupportActionBar(findViewById(R.id.toolbar))
 
         setUpUi()
-        inflateData()
+        inflateData(MovieType.Home)
     }
 
     private fun setUpUi() {
@@ -37,10 +45,35 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener {
             adapterMovies = HomeMovieAdapter(this@HomeActivity, this@HomeActivity)
             adapter = adapterMovies
         }
+
+        with(binding.tabLayout) {
+            addTab(newTab().setText(MovieType.Home.name))
+            addTab(newTab().setText(MovieType.Movie.name))
+            addTab(newTab().setText(MovieType.Series.name))
+            addTab(newTab().setText(MovieType.Episode.name))
+            addOnTabSelectedListener(this@HomeActivity)
+        }
     }
 
-    private fun inflateData() {
-        adapterMovies.submitList(Movie.getTestData())
+    private fun inflateData(type: MovieType) {
+        lifecycleScope.launchWhenResumed {
+            viewModel.fetchRandomMovieData(type = type.value).collectLatest {
+                adapterMovies.submitData(it)
+//                when (it) {
+//                    is Result.Loading -> {
+//                        Toast.makeText(this@HomeActivity, "Loading", Toast.LENGTH_LONG).show()
+//                    }
+//
+//                    is Result.Success -> {
+//                        adapterMovies.submitList(it.data)
+//                    }
+//
+//                    is Result.Failure -> {
+//                        Toast.makeText(this@HomeActivity, it.message, Toast.LENGTH_LONG).show()
+//                    }
+//                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -62,5 +95,17 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener {
 
     override fun onItemClick(position: Int, Movie: Movie) {
 
+    }
+
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+        inflateData(MovieType.valueOf(tab?.text.toString()))
+    }
+
+    override fun onTabUnselected(tab: TabLayout.Tab?) {
+        // do nothing
+    }
+
+    override fun onTabReselected(tab: TabLayout.Tab?) {
+        // do nothing
     }
 }

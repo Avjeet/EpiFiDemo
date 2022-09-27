@@ -2,8 +2,11 @@ package com.express.epifidemo.data
 
 import com.google.gson.annotations.SerializedName
 
-data class SearchResult(
-    val search: List<Movie>
+data class MovieSearchResult(
+    @SerializedName("Search")
+    val search: List<Movie>,
+    @SerializedName("Response")
+    val response: Boolean
 )
 
 data class Movie(
@@ -21,31 +24,31 @@ data class Movie(
     companion object{
         fun getTestData(): List<Movie>{
             return mutableListOf(
-                Movie("edcsec",
+                Movie("tt0848228",
                     "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
                     "The Avengers",
                     "movie",
                     "2012"
                 ),
-                Movie("edcsec",
+                Movie("tt0848228",
                     "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
                     "The Avengers",
                     "movie",
                     "2012"
                 ),
-                Movie("edcsec",
+                Movie("tt0848228",
                     "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
                     "The Avengers",
                     "movie",
                     "2012"
                 ),
-                Movie("edcsec",
+                Movie("tt0848228",
                     "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
                     "The Avengers",
                     "movie",
                     "2012"
                 ),
-                Movie("edcsec",
+                Movie("tt0848228",
                     "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
                     "The Avengers",
                     "movie",

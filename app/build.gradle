@@ -19,9 +19,15 @@ android {
     }
 
     buildTypes {
+        debug{
+            buildConfigField "String", "OMDB_API_BASE", '"https://omdbapi.com"'
+            buildConfigField "String", "OMDB_API_KEY", '"b5e5a6b3"'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "GIPHY_API_BASE", '"https://omdbapi.com"'
+            buildConfigField "String", "GIPHY_API_KEY", '"b5e5a6b3"'
         }
     }
     compileOptions {
@@ -75,6 +81,8 @@ dependencies {
     implementation ui.shimmer
     implementation ui.glideWebpDecoder
     kapt ui.glideCompiler
+
+    implementation paging.pagingRuntime
 
     //testing
     testImplementation testing.junit
