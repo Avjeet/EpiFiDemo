@@ -1,8 +1,10 @@
 package com.express.epifidemo.model
 
+import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.express.epifidemo.data.Movie
 import com.express.epifidemo.data.MovieDetail
 import com.express.epifidemo.data.Result
@@ -10,40 +12,44 @@ import com.express.epifidemo.model.datasource.MovieRemoteDataSource
 import com.express.epifidemo.model.datasource.MovieRemotePagingSource
 import com.express.epifidemo.model.datasource.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 interface HomeMovieRepository {
-    fun getRandomMovies(type:String?): Flow<PagingData<Movie>>
+    fun getRandomMovies(type: String?): Flow<PagingData<Movie>>
 
-    fun getMovieByImdbId(imdbId: String): Result<MovieDetail>
+    fun searchMovies(query: String, type: String?): Flow<PagingData<Movie>>
 
-    fun searchMovies(page: Int, type:String?): Flow<Result<List<Movie>>>
+    suspend fun getMovieByImdbId(imdbId: String): Result<MovieDetail>
+
 }
 
-open class HomeMovieRepositoryImpl @Inject constructor() :
+open class HomeMovieRepositoryImpl @Inject constructor(private val movieRemoteDataSource: MovieRemoteDataSource) :
     HomeMovieRepository {
-    override fun getRandomMovies(type:String?): Flow<PagingData<Movie>> {
+    override fun getRandomMovies(type: String?): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                MovieRemotePagingSource(type = type)
+                MovieRemotePagingSource(type = type, query =  "Avengers")
             }
         ).flow
     }
 
-    override fun getMovieByImdbId(imdbId: String): Result<MovieDetail> {
-//        return flow {
-//            emit(Result.Loading)
-//            emit(movieRemoteDataSource.getMovieByImdbId(imdbId))
-//        }
-        return Result.Loading
+    override fun searchMovies(query: String, type: String?): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                MovieRemotePagingSource(type = type, query = query)
+            }
+        ).flow
     }
 
-    override fun searchMovies(page: Int, type: String?): Flow<Result<List<Movie>>> {
-        TODO("Not yet implemented")
+    override suspend fun getMovieByImdbId(imdbId: String): Result<MovieDetail> {
+        return movieRemoteDataSource.getMovieByImdbId(imdbId)
     }
 }

@@ -24,15 +24,4 @@ class MovieRemoteDataSource @Inject constructor(private val omdbApiService: OMDB
             }
         }
     }
-
-//    suspend fun searchMoviesWithQuery(query: String, page: Int, type:String?): Result<List<Movie>> {
-//        return repositoryTryCatch {
-//            val result = omdbApiService.searchMovies(query, page, type)
-//            if (result.isSuccessful && result != null) {
-//                Result.Success(result.body()!!.search)
-//            } else {
-//                Result.Failure(result.errorBody().toString())
-//            }
-//        }
-//    }
 }

@@ -12,7 +12,7 @@ import java.io.IOException
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class MovieRemotePagingSource @Inject constructor(private val type: String?) :
+class MovieRemotePagingSource @Inject constructor(private val query:String, private val type: String?) :
     PagingSource<Int, Movie>() {
 
     val appContext = App.getInstance()?.applicationContext ?: throw IllegalStateException()
@@ -30,7 +30,7 @@ class MovieRemotePagingSource @Inject constructor(private val type: String?) :
         val page = params.key ?: STARTING_KEY
 
         return try {
-            val data = omdbApiService.searchMovies("Avengers", params.key ?: 1, type)
+            val data = omdbApiService.searchMovies(query, params.key ?: 1, type)
             if(data.response){
                 val movies = data.search
 
