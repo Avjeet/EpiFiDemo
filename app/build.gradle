@@ -26,8 +26,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "GIPHY_API_BASE", '"https://omdbapi.com"'
-            buildConfigField "String", "GIPHY_API_KEY", '"b5e5a6b3"'
+            buildConfigField "String", "OMDB_API_BASE", '"https://omdbapi.com"'
+            buildConfigField "String", "OMDB_API_KEY", '"b5e5a6b3"'
         }
     }
     compileOptions {
@@ -88,15 +88,4 @@ dependencies {
 
     //paging
     implementation paging.pagingRuntime
-
-    //testing
-    testImplementation testing.junit
-    testImplementation testing.mockk
-    testImplementation testing.archCoreTesting
-    testImplementation testing.coroutineTesting
-    debugImplementation testing.fragmentTesting
-    androidTestImplementation testing.mockk
-    androidTestImplementation testing.ext
-    androidTestImplementation testing.espresso
-    androidTestImplementation testing.espressocontrib
 }

@@ -104,7 +104,8 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
 
         lifecycleScope.launch {
             adapterMovies.loadStateFlow.collect { loadStates ->
-                binding.loadingView.isVisible = loadStates.refresh is LoadState.Loading
+                toggleLoading(loadStates.refresh is LoadState.Loading)
+
                 binding.rvMovies.isVisible =
                     loadStates.refresh !is LoadState.Loading && loadStates.refresh !is LoadState.Error
 
@@ -142,8 +143,7 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
             applicationContext,
             "${movie.title} bookmarked successfully!",
             Toast.LENGTH_SHORT
-        )
-            .show()
+        ).show()
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -158,5 +158,14 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
 
     override fun onTabReselected(tab: TabLayout.Tab?) {
         // do nothing
+    }
+
+    private fun toggleLoading(flag: Boolean) {
+        binding.loadingView.isVisible = flag
+        if (flag) {
+            binding.progresBar.startAnimation()
+        } else {
+            binding.progresBar.stopAnimation()
+        }
     }
 }
