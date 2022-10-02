@@ -80,8 +80,13 @@ dependencies {
     implementation ui.glide
     implementation ui.shimmer
     implementation ui.glideWebpDecoder
+    implementation ui.glideTransformation
     kapt ui.glideCompiler
 
+    //widget
+    implementation widget.ratingBar
+
+    //paging
     implementation paging.pagingRuntime
 
     //testing

@@ -1,16 +1,17 @@
 package com.express.epifidemo.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.express.epifidemo.constants.MovieType
-import com.express.epifidemo.data.Movie
+import com.express.epifidemo.data.MovieDetail
+import com.express.epifidemo.data.MovieUIItem
+import com.express.epifidemo.data.Result
 import com.express.epifidemo.model.HomeMovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,12 +22,17 @@ class HomeMovieViewModel @Inject constructor(private val repository: HomeMovieRe
 
     var searchQuery = MutableLiveData<String>()
 
-    fun fetchRandomMovieData(): Flow<PagingData<Movie>> {
+    private val _movieDetail = MutableLiveData<Result<MovieDetail>>()
+    val movieDetail: LiveData<Result<MovieDetail>> = _movieDetail
+
+    fun fetchRandomMovieData(): Flow<PagingData<MovieUIItem>> {
         return repository.getRandomMovies(currentMovieType.value?.value)
-            .cachedIn(viewModelScope)
+            .map { pagingData ->
+                pagingData.map { MovieUIItem.mapMovieToUiObject(it) }
+            }.cachedIn(viewModelScope)
     }
 
-    fun searchMoviesUsingQuery(): Flow<PagingData<Movie>> {
+    fun searchMoviesUsingQuery(): Flow<PagingData<MovieUIItem>> {
         return searchQuery.asFlow()
             .debounce(1000)
             .filter {
@@ -35,6 +41,9 @@ class HomeMovieViewModel @Inject constructor(private val repository: HomeMovieRe
             .distinctUntilChanged()
             .flatMapLatest {
                 repository.searchMovies(query = it, type = currentMovieType.value?.value)
+                    .map { pagingData ->
+                        pagingData.map { movie -> MovieUIItem.mapMovieToUiObject(movie) }
+                    }
                     .cachedIn(viewModelScope)
             }
     }
@@ -43,4 +52,10 @@ class HomeMovieViewModel @Inject constructor(private val repository: HomeMovieRe
         currentMovieType.value = movieType
     }
 
+    fun fetchMovieDetail(imdbId: String) {
+        viewModelScope.launch {
+            val movieDetail = repository.getMovieByImdbId(imdbId)
+            _movieDetail.postValue(movieDetail)
+        }
+    }
 }

@@ -20,40 +20,23 @@ data class Movie(
     val type: String,
     @SerializedName("Year")
     val year: String
-){
-    companion object{
-        fun getTestData(): List<Movie>{
-            return mutableListOf(
-                Movie("tt0848228",
-                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
-                    "The Avengers",
-                    "movie",
-                    "2012"
-                ),
-                Movie("tt0848228",
-                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
-                    "The Avengers",
-                    "movie",
-                    "2012"
-                ),
-                Movie("tt0848228",
-                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
-                    "The Avengers",
-                    "movie",
-                    "2012"
-                ),
-                Movie("tt0848228",
-                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
-                    "The Avengers",
-                    "movie",
-                    "2012"
-                ),
-                Movie("tt0848228",
-                    "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg" ,
-                    "The Avengers",
-                    "movie",
-                    "2012"
-                )
+)
+
+data class MovieUIItem(
+    val imdbID: String,
+    val poster: String,
+    val title: String,
+    val type: String,
+    var bookmarked: Boolean
+) {
+    companion object {
+        fun mapMovieToUiObject(movie: Movie): MovieUIItem {
+            return MovieUIItem(
+                movie.imdbID,
+                movie.poster,
+                movie.title,
+                movie.type,
+                false
             )
         }
     }

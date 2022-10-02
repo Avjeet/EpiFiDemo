@@ -7,27 +7,33 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.express.epifidemo.data.Movie
+import com.express.epifidemo.R
+import com.express.epifidemo.data.MovieUIItem
 import com.express.epifidemo.databinding.ItemMovieBinding
 
 class HomeMovieAdapter(context: Context, private val itemClickListener: OnItemClickListener) :
-    PagingDataAdapter<Movie, HomeMovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<MovieUIItem, HomeMovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     private val glide = Glide.with(context)
 
-    inner class MovieViewHolder(private val binding: ItemMovieBinding) :
+    inner class MovieViewHolder(val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(data: Movie) {
+        fun bind(data: MovieUIItem) {
             binding.tvTitle.text = data.title
             binding.tvItemType.text = data.type
             glide
                 .load(data.poster)
                 .centerCrop()
                 .into(binding.ivPoster)
+
+            if(data.bookmarked)
+                binding.ctaBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
+            else
+                binding.ctaBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
         }
 
     }
@@ -38,26 +44,45 @@ class HomeMovieAdapter(context: Context, private val itemClickListener: OnItemCl
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        getItem(position)?.let { movie ->
-            holder.bind(movie)
+        getItem(position)?.let { MovieUIItem ->
+            holder.bind(MovieUIItem)
             holder.itemView.setOnClickListener {
-                itemClickListener.onItemClick(holder.absoluteAdapterPosition, movie)
+                val clickedPos = holder.bindingAdapterPosition
+                val currentMovie = getItem(clickedPos)
+                currentMovie?.let {
+                    itemClickListener.onItemClick(
+                        clickedPos, it
+                    )
+                }
+            }
+            holder.binding.ctaBookmark.setOnClickListener {
+                val clickedPos = holder.bindingAdapterPosition
+                val currentMovie = getItem(clickedPos)
+                currentMovie?.let {
+                    val bookmarked = !it.bookmarked
+                    itemClickListener.onBookMarkClicked(
+                        it, bookmarked
+                    )
+                    snapshot()[clickedPos]?.bookmarked = bookmarked
+                    notifyItemChanged(clickedPos)
+                }
             }
         }
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie) =
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieUIItem>() {
+            override fun areItemsTheSame(oldItem: MovieUIItem, newItem: MovieUIItem) =
                 oldItem.imdbID == newItem.imdbID
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie) =
+            override fun areContentsTheSame(oldItem: MovieUIItem, newItem: MovieUIItem) =
                 oldItem == newItem
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int, Movie: Movie)
+        fun onItemClick(position: Int, movieUiItem: MovieUIItem)
+        fun onBookMarkClicked(movieUIItem: MovieUIItem, bookmarked: Boolean)
     }
 
 }

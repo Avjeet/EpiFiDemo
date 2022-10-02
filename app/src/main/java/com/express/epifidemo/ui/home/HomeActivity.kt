@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.express.epifidemo.R
 import com.express.epifidemo.constants.MovieType
 import com.express.epifidemo.data.Movie
+import com.express.epifidemo.data.MovieUIItem
 import com.express.epifidemo.databinding.ActivityHomeBinding
 import com.express.epifidemo.helpers.SpacingItemDecoration
 import com.express.epifidemo.ui.home.adapters.HomeMovieAdapter
@@ -21,6 +23,8 @@ import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+const val DETAIL_SHEET = "detail_sheet"
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
@@ -90,8 +94,8 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
     }
 
     private fun setUpObservers() {
-        viewModel.searchQuery.observe(this){
-            if(it.isNullOrBlank()){
+        viewModel.searchQuery.observe(this) {
+            if (it.isNullOrBlank()) {
                 Log.d("TAG_ST", "null observed")
                 fetchRandomData()
             }
@@ -115,8 +119,14 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
         }
     }
 
-    override fun onItemClick(position: Int, Movie: Movie) {
+    override fun onItemClick(position: Int, movie: MovieUIItem) {
+        val detailSheet = MovieDetailBottomSheet.getInstance(movie.imdbID)
+        detailSheet.show(supportFragmentManager, DETAIL_SHEET)
+    }
 
+    override fun onBookMarkClicked(movie: MovieUIItem, bookmarked: Boolean) {
+        Toast.makeText(applicationContext, "${movie.title} bookmarked successfully!", Toast.LENGTH_SHORT)
+            .show()
     }
 
     override fun onTabSelected(tab: TabLayout.Tab?) {
