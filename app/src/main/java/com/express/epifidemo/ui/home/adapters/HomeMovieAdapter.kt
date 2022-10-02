@@ -21,7 +21,6 @@ class HomeMovieAdapter(context: Context, private val itemClickListener: OnItemCl
     inner class MovieViewHolder(val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-
         fun bind(data: MovieUIItem) {
             binding.tvTitle.text = data.title
             binding.tvItemType.text = data.type
@@ -30,12 +29,11 @@ class HomeMovieAdapter(context: Context, private val itemClickListener: OnItemCl
                 .centerCrop()
                 .into(binding.ivPoster)
 
-            if(data.bookmarked)
+            if (data.bookmarked)
                 binding.ctaBookmark.setImageResource(R.drawable.ic_baseline_bookmark_24)
             else
                 binding.ctaBookmark.setImageResource(R.drawable.ic_baseline_bookmark_border_24)
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

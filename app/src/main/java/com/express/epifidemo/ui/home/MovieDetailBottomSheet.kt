@@ -43,9 +43,10 @@ class MovieDetailBottomSheet : BottomSheetDialogFragment() {
 
     private fun setUpObservers() {
         viewModel.movieDetail.observe(this) {
-            when (it) {
-                is Result.Success -> inflateData(it.data)
-                is Result.Failure -> dismiss()
+            if (it is Result.Success) {
+                inflateData(it.data)
+            } else {
+                dismiss()
             }
         }
     }

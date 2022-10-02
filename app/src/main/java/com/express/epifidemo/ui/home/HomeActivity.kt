@@ -33,7 +33,7 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var adapterMovies: HomeMovieAdapter
-    val viewModel: HomeMovieViewModel by viewModels()
+    private val viewModel: HomeMovieViewModel by viewModels()
     private lateinit var imm: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,15 +133,15 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
         }
     }
 
-    override fun onItemClick(position: Int, movie: MovieUIItem) {
-        val detailSheet = MovieDetailBottomSheet.getInstance(movie.imdbID)
+    override fun onItemClick(position: Int, movieUiItem: MovieUIItem) {
+        val detailSheet = MovieDetailBottomSheet.getInstance(movieUiItem.imdbID)
         detailSheet.show(supportFragmentManager, DETAIL_SHEET)
     }
 
-    override fun onBookMarkClicked(movie: MovieUIItem, bookmarked: Boolean) {
+    override fun onBookMarkClicked(movieUIItem: MovieUIItem, bookmarked: Boolean) {
         Toast.makeText(
             applicationContext,
-            "${movie.title} bookmarked successfully!",
+            "${movieUIItem.title} bookmarked successfully!",
             Toast.LENGTH_SHORT
         ).show()
     }

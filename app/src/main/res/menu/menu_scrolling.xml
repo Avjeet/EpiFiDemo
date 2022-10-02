@@ -4,8 +4,8 @@
     tools:context="com.express.epifidemo.ui.home.HomeActivity">
     <item
         android:id="@+id/action_bookmark"
-        android:orderInCategory="100"
-        android:title="Bookmark"
         android:icon="@drawable/ic_baseline_bookmark_border_24"
+        android:orderInCategory="100"
+        android:title="@string/bookmark"
         app:showAsAction="always" />
 </menu>

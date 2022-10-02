@@ -8,8 +8,8 @@
         android:top="@dimen/dp_tab">
 
         <shape>
-            <solid android:color="#99eeeeee"/>
-            <corners android:radius="10dp"/>
+            <solid android:color="#99eeeeee" />
+            <corners android:radius="10dp" />
         </shape>
     </item>
 

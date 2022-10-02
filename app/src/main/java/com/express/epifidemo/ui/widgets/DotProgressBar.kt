@@ -4,12 +4,12 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.util.DisplayMetrics
-import android.view.animation.LinearInterpolator
 import com.express.epifidemo.R
 
 /**
@@ -17,8 +17,8 @@ import com.express.epifidemo.R
  */
 
 class DotProgressBar : FrameLayout {
-    private var margin:Int = convertDpToPixel(4f,context)
-    private var dotRadius:Int = convertDpToPixel(8f,context)
+    private var margin: Int = convertDpToPixel(4f, context)
+    private var dotRadius: Int = convertDpToPixel(8f, context)
     private var numberOfDots = 3
     private val animators = mutableListOf<Animator>()
     private var animationDuration = 1000L
@@ -35,7 +35,11 @@ class DotProgressBar : FrameLayout {
         init()
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         init()
     }
 
@@ -43,7 +47,8 @@ class DotProgressBar : FrameLayout {
         clipChildren = false
         clipToPadding = false
         dotProgressBar = LinearLayout(context)
-        val progressBarLayoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        val progressBarLayoutParams =
+            LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         progressBarLayoutParams.gravity = Gravity.CENTER
         dotProgressBar.layoutParams = progressBarLayoutParams
         dotProgressBar.clipChildren = false
@@ -122,8 +127,8 @@ class DotProgressBar : FrameLayout {
             dotProgressBar.minScale = minScale
             dotProgressBar.numberOfDots = numberOfDots
             dotProgressBar.animationDuration = animationDuration
-            dotProgressBar.margin = convertDpToPixel(margin.toFloat(),context)
-            dotProgressBar.dotRadius = convertDpToPixel(dotRadius.toFloat(),context)
+            dotProgressBar.margin = convertDpToPixel(margin.toFloat(), context)
+            dotProgressBar.dotRadius = convertDpToPixel(dotRadius.toFloat(), context)
             dotProgressBar.primaryAnimator = primaryAnimator
             dotProgressBar.dotBackground = dotBackground
             dotProgressBar.init()
@@ -167,7 +172,7 @@ class DotProgressBar : FrameLayout {
     }
 
     companion object {
-        fun convertDpToPixel(dp: Float,context: Context): Int {
+        fun convertDpToPixel(dp: Float, context: Context): Int {
             return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
         }
     }

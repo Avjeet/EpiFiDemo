@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.express.epifidemo.viewmodel.HomeMovieViewModel" />
@@ -23,20 +22,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:orientation="vertical"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:orientation="vertical">
+            tools:visibility="visible">
 
             <com.example.dotprogressbar.DotProgressBar
                 android:id="@+id/progres_bar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:textColor="?attr/colorOnPrimary"
                 android:text="Beam me up scottie" />
         </LinearLayout>
 
@@ -86,10 +85,10 @@
                         android:background="@drawable/gray_edit_text"
                         android:drawableStart="@drawable/ic_baseline_search_24"
                         android:gravity="center"
-                        android:maxLines="1"
-                        android:inputType="text"
-                        android:imeOptions="actionSearch"
                         android:hint="@string/search_hint_text"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
                         android:paddingStart="10dp"
                         android:text="@={viewModel.searchQuery}"
                         android:textColorHint="@color/grey_500" />
@@ -122,7 +121,7 @@
                             android:layout_toEndOf="@id/toolbar_title"
                             android:text="."
                             android:textColor="@android:color/holo_red_light"
-                            android:textSize="32sp"/>
+                            android:textSize="32sp" />
 
                     </RelativeLayout>
 

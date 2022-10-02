@@ -1,14 +1,9 @@
 package com.express.epifidemo.model.datasource
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import com.express.epifidemo.data.Movie
 import com.express.epifidemo.data.MovieDetail
 import com.express.epifidemo.data.Result
 import com.express.epifidemo.model.OMDBApiService
 import com.express.epifidemo.utils.repositoryTryCatch
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 const val PAGE_SIZE = 10

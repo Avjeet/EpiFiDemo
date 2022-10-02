@@ -21,7 +21,7 @@ class SpacingItemDecoration(
             ((parent.width - mSizeGridSpacingPx.toFloat() * (mGridSize - 1)) / mGridSize).toInt()
         val padding = parent.width / mGridSize - frameWidth
         val itemPosition =
-            (view.layoutParams as RecyclerView.LayoutParams).viewAdapterPosition - offSet
+            (view.layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition - offSet
         if (itemPosition >= 0) {
             outRect.top = mSizeGridSpacingPx
             if (itemPosition % mGridSize == 0) {

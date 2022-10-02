@@ -21,6 +21,6 @@ interface OMDBApiService {
 
     @GET(".")
     suspend fun getMovieByIMDBId(
-        @Query("i") imdbId:String
+        @Query("i") imdbId: String
     ): Response<MovieDetail>
 }

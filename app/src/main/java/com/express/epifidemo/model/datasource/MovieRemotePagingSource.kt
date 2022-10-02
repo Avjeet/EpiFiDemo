@@ -5,19 +5,21 @@ import androidx.paging.PagingState
 import com.express.epifidemo.App
 import com.express.epifidemo.data.Movie
 import com.express.epifidemo.di.modules.DataSourceEntryPoint
-import com.express.epifidemo.model.OMDBApiService
 import dagger.hilt.android.EntryPointAccessors
 import retrofit2.HttpException
 import java.io.IOException
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class MovieRemotePagingSource @Inject constructor(private val query:String, private val type: String?) :
+class MovieRemotePagingSource @Inject constructor(
+    private val query: String,
+    private val type: String?
+) :
     PagingSource<Int, Movie>() {
 
-    val appContext = App.getInstance()?.applicationContext ?: throw IllegalStateException()
-    val entryPoint = EntryPointAccessors.fromApplication(appContext, DataSourceEntryPoint::class.java)
-    val omdbApiService = entryPoint.omdbApiService
+    private val appContext = App.getInstance()?.applicationContext ?: throw IllegalStateException()
+    private val entryPoint =
+        EntryPointAccessors.fromApplication(appContext, DataSourceEntryPoint::class.java)
+    private val omdbApiService = entryPoint.omdbApiService
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -31,7 +33,7 @@ class MovieRemotePagingSource @Inject constructor(private val query:String, priv
 
         return try {
             val data = omdbApiService.searchMovies(query, params.key ?: 1, type)
-            if(data.response){
+            if (data.response) {
                 val movies = data.search
 
                 LoadResult.Page(
@@ -39,7 +41,7 @@ class MovieRemotePagingSource @Inject constructor(private val query:String, priv
                     prevKey = if (page == STARTING_KEY) null else page,
                     nextKey = if (movies.isEmpty()) null else page + 1
                 )
-            } else{
+            } else {
                 LoadResult.Error(Throwable("No Data"))
             }
 
@@ -48,7 +50,6 @@ class MovieRemotePagingSource @Inject constructor(private val query:String, priv
         } catch (e: HttpException) {
             return LoadResult.Error(e)
         }
-
     }
 
     companion object {

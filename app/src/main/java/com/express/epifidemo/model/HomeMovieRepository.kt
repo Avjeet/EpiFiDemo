@@ -1,10 +1,8 @@
 package com.express.epifidemo.model
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.express.epifidemo.data.Movie
 import com.express.epifidemo.data.MovieDetail
 import com.express.epifidemo.data.Result
@@ -32,7 +30,7 @@ open class HomeMovieRepositoryImpl @Inject constructor(private val movieRemoteDa
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                MovieRemotePagingSource(type = type, query =  "Avengers")
+                MovieRemotePagingSource(type = type, query = "Avengers")
             }
         ).flow
     }
