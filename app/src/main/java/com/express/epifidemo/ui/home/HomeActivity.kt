@@ -9,11 +9,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.express.epifidemo.R
 import com.express.epifidemo.constants.MovieType
-import com.express.epifidemo.data.Movie
 import com.express.epifidemo.data.MovieUIItem
 import com.express.epifidemo.databinding.ActivityHomeBinding
 import com.express.epifidemo.helpers.SpacingItemDecoration
@@ -45,9 +46,9 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
         binding.viewModel = viewModel
 
         setUpUi()
+        setUpObservers()
         searchQuery()
         fetchRandomData()
-        setUpObservers()
     }
 
     private fun setUpUi() {
@@ -100,6 +101,18 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
                 fetchRandomData()
             }
         }
+
+        lifecycleScope.launch {
+            adapterMovies.loadStateFlow.collect { loadStates ->
+                binding.loadingView.isVisible = loadStates.refresh is LoadState.Loading
+                binding.rvMovies.isVisible =
+                    loadStates.refresh !is LoadState.Loading && loadStates.refresh !is LoadState.Error
+
+                if (loadStates.refresh is LoadState.Error) {
+                    Toast.makeText(applicationContext, "NO movies found", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -125,7 +138,11 @@ class HomeActivity : AppCompatActivity(), HomeMovieAdapter.OnItemClickListener,
     }
 
     override fun onBookMarkClicked(movie: MovieUIItem, bookmarked: Boolean) {
-        Toast.makeText(applicationContext, "${movie.title} bookmarked successfully!", Toast.LENGTH_SHORT)
+        Toast.makeText(
+            applicationContext,
+            "${movie.title} bookmarked successfully!",
+            Toast.LENGTH_SHORT
+        )
             .show()
     }
 
